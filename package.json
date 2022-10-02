@@ -1,0 +1,26 @@
+{
+  "name": "graphql_test_books",
+  "version": "1.0.0",
+  "description": "Learning GraphQL for my test exam",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon server.js"
+  },
+  "keywords": [
+    "Learn",
+    "GraphQL",
+    "Node",
+    "Express",
+    "MongoDB"
+  ],
+  "author": "Ogooluwanick",
+  "license": "ISC",
+  "dependencies": {
+        "express": "^4.16.4",
+        "express-graphql": "^0.7.1",
+        "graphql": "^14.1.1"  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
