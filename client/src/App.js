@@ -1,5 +1,5 @@
 import React,{ useState, useEffect } from 'react';
-import axios from "axios"
+
 import './App.css';
 import BooksList from './components/BooksList';
 import InputField from './components/InputField';
@@ -7,7 +7,7 @@ import InputField from './components/InputField';
 function App() {
         const [search, setSearch] = useState("")
         const [myBooks, setMyBooks] = useState([])
-        const [data, setData] = useState(null)
+        const [data, setData] = useState({books:null,authors:null})
 
         const handleBookSelection=(e)=>{
                 e.preventDefault();
@@ -22,7 +22,7 @@ function App() {
 
 
         useEffect(() => {
-                fetch("http://localhost:3001/graphql", {
+                fetch(url, {
                         method: "POST",
                         headers: {"Content-Type": "application/json"},
                         body: JSON.stringify({ query: query })
@@ -34,11 +34,13 @@ function App() {
                         return response.json();
                 })
                 .then(data => {
-                        setData(data.data.books);
+                        setData({...data, books:[...data.data.books]});
                 })
-                .catch(error => {
+                .catch(error => { 
                         console.error(error);
                 });
+                
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         }, []);
             
 
@@ -48,7 +50,7 @@ function App() {
     <div className="App">
         <h1 className="heading">LIBRARY Tool</h1>
         <InputField search={search} setSearch={setSearch} handleBookSelection={handleBookSelection}/>
-        <BooksList myBooks={myBooks} setMyBooks={setMyBooks} />
+        <BooksList data={data} setData={setData} />
     </div>
   );
 }

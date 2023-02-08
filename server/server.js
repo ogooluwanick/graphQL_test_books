@@ -156,6 +156,22 @@ const RootMutationType=new GraphQLObjectType({
                                                 return author
                         }
                 },
+                updateBook:{
+                        type:BookType,
+                        description:"update in a book",
+                        args:{
+                                id:{type:GraphQLNonNull(GraphQLInt)},
+                                newId:{type:GraphQLNonNull(GraphQLInt)},
+                                name:{type:GraphQLNonNull(GraphQLString)},
+
+                        },
+                        resolve:(parent,args)=>{
+                                const book=books.find(book=>args.id===book.id)
+                                                book.name=args.name
+                                                if ( args.newId){ book.id=args.newId }
+                                                return book
+                        }
+                },
                 deleteAuthor:{
                         type:AuthorType,
                         description:"delete  an author",

@@ -5,21 +5,52 @@ import {MdDone} from "react-icons/md"
 
 
 
-const BookItem = ({book, myBooks,setMyBooks}) => {
+const BookItem = ({book, data,setData}) => {
         const [edit, setEdit] = useState(false)
-        const [editBook, setEditBook] = useState(book.book);
+        const [editBook, setEditBook] = useState(book.name);
 
-        const handleDone =(id)=>{
-                setMyBooks(myBooks.map(todo=>todo.id===id?{...todo,isDone:!book.isDone}:todo))
-        }
+        
+
+        // const handleDone =(id)=>{
+        //         setMyBooks(myBooks.map(todo=>todo.id===id?{...todo,isDone:!book.isDone}:todo))
+        // }
         const handleEdit = (e, id) => {
                 e.preventDefault();
-                setMyBooks(myBooks.map((todo) => (todo.id === id ? { ...todo, todo: editBook } : todo)));
+
+                const query = `  mutation {
+                                                editBookName(id: "${bookId}", name: "${editBookName}") {
+                                                                        id
+                                                                        name
+                                                                        author {
+                                                                        name
+                                }
+                                }
+                        }`
+                const url = `http://localhost:3001/graphql`;
+                
+                setData({...data,books:data.books.map((book) => (book.id === id ? { ...book, name: editBook } : book))});
                 setEdit(false);
+
+                fetch("http://localhost:3001/graphql", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                        query: query
+                        })
+                })
+    .then(res => res.json())
+    .then(data => {
+      // handle the returned data
+    })
+    .catch(error => {
+      console.error(error);
+    });
+};
+
         };
-        const handleDelete =(id)=>{
-                setMyBooks(myBooks.filter(todo=>todo.id!==id))
-        }
+        // const handleDelete =(id)=>{
+        //         setMyBooks(myBooks.filter(todo=>todo.id!==id))
+        // }
 
         const inputRef=useRef(null)
 
@@ -29,7 +60,9 @@ const BookItem = ({book, myBooks,setMyBooks}) => {
         
 
   return (
-        <form className='myBooks__single' onSubmit={(e) => handleEdit(e, book.id)}>
+        <>
+        { book.name &&
+        <form className='myBooks__single'  onSubmit={(e) => handleEdit(e, book.id)} >  
                 {
                         edit ? (
                                 <input
@@ -40,30 +73,24 @@ const BookItem = ({book, myBooks,setMyBooks}) => {
                                 />
                         ) 
                         : 
-                        book.isDone ? (
-                                <s className="myBooks__single--text">{book.todo}</s>
-                                ) : 
-                                (<span className="myBooks__single--text">{book.todo}</span>)
+                        (<span className="myBooks__single--text">{book.name}</span>)
                 }
-          <div>
-            <span
-              className="icon"
-              onClick={() => {
-                if (!edit && !book.isDone) {
-                  setEdit(!edit);
-                }
-              }}
-            >
-              <AiFillEdit />
-            </span>
-            <span className="icon" onClick={() => handleDelete(book.id)}>
-              <AiFillDelete />
-            </span>
-            <span className="icon" onClick={() => handleDone(book.id)}>
-              <MdDone />
-            </span>
-          </div>
+                <div>
+                        <span className="icon"onClick={() => {!edit &&  setEdit(!edit)  }} >
+                                <AiFillEdit />
+                        </span>
+                        <span className="icon" onClick={() =>""}>
+                                {/* handleDelete(book.id)} */}
+                                <AiFillDelete />
+                        </span>
+                        <span className="icon" onClick={() => ""}>
+                                {/* handleDone(book.id) */}
+                                <MdDone />
+                        </span>
+                </div>
         </form>
+        }
+        </>
   )
 }
 

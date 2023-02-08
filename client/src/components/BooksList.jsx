@@ -2,14 +2,16 @@ import React from 'react'
 import BookItem from './BookItem'
 
 
-const BooksList= ({myBooks,setTodos}) => {
+const BooksList= ({data,setData}) => {
+        console.log("booklist",data.books)
   return (
         <div className='myBooks'>
-        {
-                myBooks.map(book=>(
-                        <BookItem book={book} key={book.id} myBooks={myBooks} setMyBooks={setTodos}/>
-                ))
-        }
+                <h2 className='myBooks__heading'>Books</h2>
+                {
+                        data.books?.map(book=>(
+                                <BookItem book={book} key={book.id} data={data} setData={setData}/>
+                        ))
+                }
         </div>
   )
 }
