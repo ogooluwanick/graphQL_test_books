@@ -145,15 +145,15 @@ const RootMutationType=new GraphQLObjectType({
                         description:"update in an author",
                         args:{
                                 id:{type:GraphQLNonNull(GraphQLInt)},
-                                newId:{type:GraphQLNonNull(GraphQLInt)},
+                                newId:{type:GraphQLInt},
                                 name:{type:GraphQLNonNull(GraphQLString)},
 
                         },
                         resolve:(parent,args)=>{
                                 const author=authors.find(author=>args.id===author.id)
-                                                author.name=args.name
-                                                author.id=args.newId
-                                                return author
+                                        author.name=args.name
+                                        if(args.newId)  author.id = args.newId
+                                return author
                         }
                 },
                 updateBook:{
@@ -161,8 +161,9 @@ const RootMutationType=new GraphQLObjectType({
                         description:"update in a book",
                         args:{
                                 id:{type:GraphQLNonNull(GraphQLInt)},
-                                newId:{type:GraphQLNonNull(GraphQLInt)},
+                                newId:{type:GraphQLInt},
                                 name:{type:GraphQLNonNull(GraphQLString)},
+                                authorId:{type:GraphQLInt},
 
                         },
                         resolve:(parent,args)=>{
@@ -179,16 +180,43 @@ const RootMutationType=new GraphQLObjectType({
                                 id:{type:GraphQLNonNull(GraphQLInt)},
                         },
                         resolve:(parent,args)=>{
-                                
+                                let deletedAuthor;
 
                                 for (let x = 0; x <authors.length; x++) {
                                         if  (authors[x].id===args.id){
+                                                deletedAuthor = authors[x];
                                                 authors.splice(x,1)
                                         }
                                 }
+                                
+                                // for (let x = 0; x <=books.length; x++) {
+                                //         if  (books[x].authorId==args.id){
+                                //                 books.splice(x,1)
+                                //         }
+                                // }
+                                // console.log("book",books)      
 
-                                 console.log(authors)
-                                return authors
+                                return deletedAuthor
+                        }
+                },
+                deleteBook:{
+                        type:BookType,
+                        description:"delete a book",
+                        args:{
+                                id:{type:GraphQLNonNull(GraphQLInt)},
+                        },
+                        resolve:(parent,args)=>{
+                                let deletedBook ;
+
+                                for (let x = 0; x <books.length; x++) {
+                                        if  (books[x].id===args.id){
+                                                deletedBook = books[x];
+                                                books.splice(x,1)
+                                        }
+                                }
+
+                                console.log(deletedBook)
+                                return deletedBook
                         }
                 }
                 //add update and delete book

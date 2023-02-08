@@ -1,12 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react'
 import {AiFillEdit,AiFillDelete} from "react-icons/ai"
+import useOnclickOutside from "react-cool-onclickoutside";
 
 
 
 
-const BookItem = ({book, data : globalData,setData}) => {
+
+const BookItem = ({author, data : globalData,setData}) => {
         const [edit, setEdit] = useState(false)
-        const [editBook, setEditBook] = useState(book.name);
+        const [editBook, setEditBook] = useState(author.name);
 
         
 
@@ -15,7 +17,7 @@ const BookItem = ({book, data : globalData,setData}) => {
         const handleEdit = (e, id) => {
                 e.preventDefault();
 
-                const mutation = `  mutation { updateBook(id: ${id}, name: "${editBook}") {   id  name  author { name } } }`   //an error with double and single quotes to watch out for with queries
+                const mutation = `  mutation { updateAuthor(id: ${id}, name: "${editBook}") {   id  name  } }`   //an error with double and single quotes to watch out for with queries
                 
                 fetch(url, {
                         method: "POST",
@@ -29,9 +31,9 @@ const BookItem = ({book, data : globalData,setData}) => {
                         return response.json();
                 })
                 .then(data => {
-                        console.log("edit",data.data.updateBook)
-                        if(data.data.updateBook){
-                                setData({...globalData,books:globalData.books.map((book) => (book.id === id ? { ...book, name: data.data.updateBook.name } : book))});
+                        console.log("edit",data.data.updateAuthor)
+                        if(data.data.updateAuthor){
+                                setData({...globalData,authors:globalData.authors.map((author) => (author.id === id ? { ...author, name: data.data.updateAuthor.name } : author))});
                                 setEdit(false);
                         }
                 })
@@ -42,7 +44,7 @@ const BookItem = ({book, data : globalData,setData}) => {
 
         
         const handleDelete =(id)=>{
-                const mutation = `  mutation { deleteBook(id: ${id}) {   id  name   } }`   //an error with double and single quotes to watch out for with queries
+                const mutation = `  mutation { deleteAuthor(id: ${id}) {   id  name   } }`   //an error with double and single quotes to watch out for with queries
                 fetch(url, {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
@@ -55,9 +57,9 @@ const BookItem = ({book, data : globalData,setData}) => {
                         return response.json();
                 })
                 .then(data => {
-                        console.log("edit",data.data.deleteBook)
-                        if(data.data.deleteBook){
-                                setData({...globalData,books:globalData.books.filter((book) => (book.id !== id  && book))});
+                        console.log("edit",data.data.deleteAuthor)
+                        if(data.data.deleteAuthor){
+                                setData({...globalData,authors:globalData.authors.filter((author) => (author.id !== id  && author))});
                                 setEdit(false);
                         }
                 })
@@ -68,6 +70,8 @@ const BookItem = ({book, data : globalData,setData}) => {
 
         const inputRef=useRef(null)
 
+        const ref = useOnclickOutside(() => setEdit(false));
+
         useEffect(() => {
                 inputRef.current?.focus();
         }, [edit])
@@ -75,8 +79,8 @@ const BookItem = ({book, data : globalData,setData}) => {
 
   return (
         <>
-        { book.name &&
-        <form className='myBooks__single'  onSubmit={(e) => handleEdit(e, book.id)} >  
+        { author.name &&
+        <form className='myBooks__single myAuthors__single'  onSubmit={(e) => handleEdit(e, author.id)}  ref={ref}>  
                 {
                         edit ? (
                                 <input
@@ -87,15 +91,15 @@ const BookItem = ({book, data : globalData,setData}) => {
                                 />
                         ) 
                         : 
-                        (<span className="myBooks__single--text">{book.name}</span>)
+                        (<span className="myBooks__single--text">{author.name}</span>)
                 }
                 <div>
                         <span className="icon"onClick={() => {!edit &&  setEdit(!edit)  }} >
                                 <AiFillEdit />
                         </span>
-                        <span className="icon" onClick={() => handleDelete(book.id)}>
+                        <span className="icon" onClick={() => handleDelete(author.id)}>
                                 
-                                <AiFillDelete  />
+                                <AiFillDelete />
                         </span>
                 </div>
         </form>

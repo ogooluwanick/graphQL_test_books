@@ -4,6 +4,10 @@
         position: relative;
         align-items: center;
       }
+
+      .reset{
+        
+      }
       
       .input__box {
         width: 100%;
@@ -13,10 +17,12 @@
         border: none;
         transition: 0.2s;
         box-shadow: inset 0 0 5px black;
+        padding-right: 8rem;
+
       }
       
       .input__box:focus {
-        box-shadow: 0 0 10px 1000px rgba(0, 0, 0, 0.5);
+        box-shadow: 0 0 10px 1000px rgba(0, 0, 0, 0.5);      /*for giving inputs absolute focus*/
         outline: none;
       }
       
@@ -33,6 +39,10 @@
         color: white;
         transition: 0.2s all;
         box-shadow: 0 0 10px black;
+      }
+
+      .reset{
+        right: 60px;
       }
       
       .input_submit:hover {
@@ -57,13 +67,17 @@
         display: flex;
         flex-direction: column;
         width: 50%;
-        background-color: rgb(50, 195, 205);
+        background-color: rgba(50, 195, 205,.85);
         margin-top: 1rem;
         margin-bottom: 1.5rem;
         
         min-height: 0;
 
 }
+
+        .myAuthors{
+                background-color: rgba(128, 128, 128,.75);
+        }
       
       
       .dragactive {
@@ -92,6 +106,14 @@
         margin: 15px 40px 10px 40px;
         background-image: url("https://img.freepik.com/free-photo/crumpled-yellow-paper-background-close-up_60487-2390.jpg?size=626&ext=jpg");
         transition: 0.2s;
+      }
+
+      .myAuthors__single{
+        background-color: rgba(0, 128, 0, .65);
+        background-blend-mode: multiply;
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
       }
 
       .myBooks__single:last-child{

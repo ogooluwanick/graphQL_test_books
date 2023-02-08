@@ -1,23 +1,28 @@
 import React,{ useState, useEffect } from 'react';
 
 import './App.css';
+import AuthorsList from './components/AuthorsList';
 import BooksList from './components/BooksList';
 import InputField from './components/InputField';
 
 function App() {
         const [search, setSearch] = useState("")
-        const [myBooks, setMyBooks] = useState([])
         const [data, setData] = useState({books:null,authors:null})
 
-        const handleBookSelection=(e)=>{
+
+        const handleBookSelection = (e) =>{
                 e.preventDefault();
-                if(search){
-                        setMyBooks([...myBooks,{id:Date.now(),book:search,isBorrowed:true,isReturned:false}])  ;
-                        setSearch("");
-                }
+                search &&
+                setData({
+                        books:    data.books.filter(book=> book.name.includes(search) )      ,
+                        authors:   data.authors.filter(author=> author.name.toLowerCase().includes(search.toLowerCase())  )  
+                })
         }
 
-        const query = ` query { books {  id name author { name } } }`
+
+        const booksQuery = ` books {  id name author { name } } `
+        const authorsQuery = ` authors {  id name  } `
+        const query = ` query {  books: ${booksQuery}   authors: ${authorsQuery}  }`
         const url = `http://localhost:3001/graphql`;
 
 
@@ -34,14 +39,20 @@ function App() {
                         return response.json();
                 })
                 .then(data => {
-                        setData({...data, books:[...data.data.books]});
+                        setData({books:[...data.data.books], authors:[...data.data.authors]});
                 })
                 .catch(error => { 
                         console.error(error);
                 });
+              
+
                 
+                  
         // eslint-disable-next-line react-hooks/exhaustive-deps
         }, []);
+                
+                
+               
             
 
         console.log("Data",data)
@@ -49,7 +60,8 @@ function App() {
   return (
     <div className="App">
         <h1 className="heading">LIBRARY Tool</h1>
-        <InputField search={search} setSearch={setSearch} handleBookSelection={handleBookSelection}/>
+        <InputField search={search} setSearch={setSearch}  data={data}   setData={setData}  handleBookSelection={handleBookSelection} />
+        <AuthorsList data={data} setData={setData} />
         <BooksList data={data} setData={setData} />
     </div>
   );
