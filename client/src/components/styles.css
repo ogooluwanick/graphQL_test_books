@@ -39,6 +39,7 @@
         color: white;
         transition: 0.2s all;
         box-shadow: 0 0 10px black;
+        cursor: pointer;
       }
 
       .reset{
@@ -75,9 +76,71 @@
 
 }
 
-        .myAuthors{
-                background-color: rgba(128, 128, 128,.75);
-        }
+.addData__Item{
+        display: flex;
+        flex-direction: column;
+}
+.addData__Item >p {
+        font-size: 1.2rem;
+        text-align: center;
+        font-weight: 900;
+        color: aliceblue;
+        padding: .5rem;
+        margin-bottom: .6rem;
+        background-color: #2f74c0;
+}
+
+.addData__Item >.inputbox {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 1rem;
+
+        padding: 0 1.5rem;
+        margin-bottom: .6rem;
+
+}
+
+.addData__Item input {
+        flex: 1;
+        font-size: 1.25rem;
+        padding: .6rem;
+        border-radius: 3px;
+        border: none;
+        
+}
+
+.flexBox button  { 
+        all: unset; 
+        width: 50px;
+        height: 50px;
+        margin: 12px;
+        border-radius: 50px;
+        right: 0px;
+        border: none;
+        text-align: center;
+        font-size: 1.5rem;
+        background-color: #2f74c0;
+        color: white;
+        transition: 0.2s all;
+        box-shadow: 0 0 10px black;
+        cursor: pointer;
+}
+.flexBox button  svg{  margin-top: .4rem;} 
+.flexBox >:nth-child(1)  {
+        max-width: 4rem;
+}
+.flexBox >:nth-child(2)  {
+        min-width: 17rem;
+}
+@media screen and (max-width:600px) {
+       .flexBox{ flex-direction: column; }
+}
+
+
+.myAuthors{
+        background-color: rgba(128, 128, 128,.75);
+}
       
       
       .dragactive {

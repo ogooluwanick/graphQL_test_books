@@ -26,7 +26,8 @@ function App() {
         const url = `http://localhost:3001/graphql`;
 
 
-        useEffect(() => {
+        const refreshData= async ()=>{
+                console.log("worked")
                 fetch(url, {
                         method: "POST",
                         headers: {"Content-Type": "application/json"},
@@ -44,10 +45,10 @@ function App() {
                 .catch(error => { 
                         console.error(error);
                 });
-              
+        }
 
-                
-                  
+        useEffect(() => {
+                refreshData()
         // eslint-disable-next-line react-hooks/exhaustive-deps
         }, []);
                 
@@ -60,9 +61,9 @@ function App() {
   return (
     <div className="App">
         <h1 className="heading">LIBRARY Tool</h1>
-        <InputField search={search} setSearch={setSearch}  data={data}   setData={setData}  handleBookSelection={handleBookSelection} />
-        <AuthorsList data={data} setData={setData} />
-        <BooksList data={data} setData={setData} />
+        <InputField search={search} setSearch={setSearch}  data={data}   setData={setData}  handleBookSelection={handleBookSelection} refreshData={refreshData} />
+        <AuthorsList data={data} setData={setData} refreshData={refreshData} />
+        <BooksList data={data} setData={setData} refreshData={refreshData}  />
     </div>
   );
 }
