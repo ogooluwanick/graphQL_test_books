@@ -14,7 +14,7 @@ A Node-React app that performs CRUD operations on a small dataset of books and a
 To get started with this app, follow the instructions below:
 
 1. Clone this repository to your local machine: 
-git clone https://github.com/[YOUR_USERNAME]/graphQL_test_books.git
+git clone https://github.com/ogooluwanick/graphQL_test_books.git
 
 2. Navigate to the app directory: 
 cd graphQL_test_books
